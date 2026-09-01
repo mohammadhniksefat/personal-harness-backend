@@ -30,7 +30,7 @@ def terminal(args, cancel_event):
 
 def file_read(args, cancel_event): return safe_path(args['path']).read_text(encoding='utf-8')[:settings.max_tool_output_chars]
 def file_write(args, cancel_event):
-    p=safe_path(args['path']); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(args['content'],encoding='utf-8'); return f'Wrote into {p.relative_to(Path(settings.harness_workspace).resolve())} file successfully'
+    p=safe_path(args['path']); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(args['content'],encoding='utf-8'); return f'Wrote {p.relative_to(Path(settings.harness_workspace).resolve())}'
 def calculator(args, cancel_event):
     allowed={ast.Add:operator.add,ast.Sub:operator.sub,ast.Mult:operator.mul,ast.Div:operator.truediv,ast.Mod:operator.mod,ast.Pow:operator.pow,ast.USub:operator.neg}
     def ev(n):
@@ -63,7 +63,7 @@ TOOLS={
  'datetime': {'description':'Get current date/time.','schema':{'type':'object','properties':{'timezone':{'type':'string'}},'required':[]},'risk':'low','fn':datetime_tool},
  'system_info': {'description':'Get basic local system information.','schema':{'type':'object','properties':{},'required':[]},'risk':'low','fn':system_info},
  'clipboard': {'description':'Read or write the local clipboard.','schema':{'type':'object','properties':{'operation':{'type':'string','enum':['read','write']},'text':{'type':'string'}},'required':['operation']},'risk':'medium','fn':clipboard},
-#  'database_query': {'description':'Retrieve information through a future read-only database adapter.','schema':{'type':'object','properties':{'query':{'type':'string'}},'required':['query']},'risk':'medium','fn':database_query},
+ 'database_query': {'description':'Retrieve information through a future read-only database adapter.','schema':{'type':'object','properties':{'query':{'type':'string'}},'required':['query']},'risk':'medium','fn':database_query},
 }
 
 def definitions(): return [{'type':'function','function':{'name':n,'description':v['description'],'parameters':v['schema']}} for n,v in TOOLS.items()]
