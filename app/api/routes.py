@@ -47,4 +47,4 @@ async def chat(sid:int,x:ChatIn,db:DBSession=Depends(dbdep)):
             except asyncio.TimeoutError: continue
         await task
         yield 'data: {"type":"done"}\n\n'
-    return StreamingResponse(gen(),media_type='text/event-stream')
+    return StreamingResponse(gen(), media_type='text/event-stream', headers={'Cache-Control':'no-cache','Connection':'keep-alive','X-Accel-Buffering':'no'})
