@@ -12,7 +12,7 @@ def safe_path(p):
     return target
 
 SAFE_CMDS={'dir','echo','where','whoami','hostname','ipconfig','python','py','pip','npm','node','git'}
-SENSITIVE_PREFIXES=('npm install','npm uninstall','pip install','pip uninstall','git clean','git reset','shutdown','taskkill','format','del ','remove-item','set-itemproperty')
+SENSITIVE_PREFIXES=('git clean','git reset','shutdown','taskkill','format','del ','remove-item','set-itemproperty')
 
 def terminal(args, cancel_event):
     command=args['command'].strip(); first=command.split()[0].lower() if command else ''
@@ -63,7 +63,7 @@ TOOLS={
  'datetime': {'description':'Get current date/time.','schema':{'type':'object','properties':{'timezone':{'type':'string'}},'required':[]},'risk':'low','fn':datetime_tool},
  'system_info': {'description':'Get basic local system information.','schema':{'type':'object','properties':{},'required':[]},'risk':'low','fn':system_info},
  'clipboard': {'description':'Read or write the local clipboard.','schema':{'type':'object','properties':{'operation':{'type':'string','enum':['read','write']},'text':{'type':'string'}},'required':['operation']},'risk':'medium','fn':clipboard},
- 'database_query': {'description':'Retrieve information through a future read-only database adapter.','schema':{'type':'object','properties':{'query':{'type':'string'}},'required':['query']},'risk':'medium','fn':database_query},
+#  'database_query': {'description':'Retrieve information through a future read-only database adapter.','schema':{'type':'object','properties':{'query':{'type':'string'}},'required':['query']},'risk':'medium','fn':database_query},
 }
 
 def definitions(): return [{'type':'function','function':{'name':n,'description':v['description'],'parameters':v['schema']}} for n,v in TOOLS.items()]
