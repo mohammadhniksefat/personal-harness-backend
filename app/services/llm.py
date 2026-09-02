@@ -44,10 +44,14 @@ async def stream_chat(messages: list[dict], tools: list[dict]) -> AsyncIterator[
     timeout = httpx.Timeout(120.0, connect=20.0)
     async with httpx.AsyncClient(timeout=timeout) as client:
         try:
-            async with client.stream("POST", _url(), headers=_headers(), json=payload) as response:
+            async with client.stream(
+                "POST", _url(), headers=_headers(), json=payload
+            ) as response:
                 if response.status_code >= 400:
                     body = await response.aread()
-                    raise LLMError(f"LLM API returned {response.status_code}: {body.decode(errors='replace')}")
+                    raise LLMError(
+                        f"LLM API returned {response.status_code}: {body.decode(errors='replace')}"
+                    )
 
                 async for line in response.aiter_lines():
                     if not line or not line.startswith("data:"):
